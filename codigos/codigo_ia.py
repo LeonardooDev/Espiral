@@ -1,7 +1,7 @@
 from huggingface_hub import InferenceClient
 
 # Configuración
-TOKEN_HF = "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"
+TOKEN_HF = ""
 client_ia = InferenceClient("Qwen/Qwen2.5-72B-Instruct", token=TOKEN_HF)
 
 def chat():
