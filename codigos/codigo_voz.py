@@ -7,7 +7,7 @@ from piper import PiperVoice
 
 # --- CONFIGURACIÓN ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Prueba cambiando la línea del VOICE_PATH por la ruta completa real:
+# Ruta exacta de el archivo
 VOICE_PATH = r"C:\Users\Admin\Documents\Espiral\Espiral\resources\tts\es_MX-claude-high.onnx"
 
 voice = PiperVoice.load(VOICE_PATH)
@@ -58,7 +58,7 @@ def hablar(texto):
         except queue.Empty:
             break
 
-    print(f"🗣️ VoxControl dice: {texto}")
+   # print(f"🗣️ VoxControl dice: {texto}")
     
     try:
         # Síntesis de Piper
