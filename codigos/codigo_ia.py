@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
-# Configuración
-TOKEN_HF = ""
+load_dotenv() # Esto carga el archivo .env
+TOKEN_HF = os.getenv("TOKEN_HF") # Lee la variable sin mostrarla en el código
+
 client_ia = InferenceClient("Qwen/Qwen2.5-72B-Instruct", token=TOKEN_HF)
 
 def chat():
