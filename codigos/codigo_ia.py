@@ -8,6 +8,8 @@ from huggingface_hub import InferenceClient
 
 # Prueba 3 
 
+# Prueba 4
+
 load_dotenv() # Esto carga el archivo .env
 TOKEN_HF = os.getenv("TOKEN_HF") # Lee la variable sin mostrarla en el código
 
