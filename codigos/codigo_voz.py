@@ -8,7 +8,7 @@ from piper import PiperVoice
 # --- CONFIGURACIÓN ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Ruta exacta de el archivo
-VOICE_PATH = r"C:\Users\Admin\Documents\Espiral\Espiral\resources\tts\es_MX-claude-high.onnx"
+VOICE_PATH = r"C:\Users\Admin\Documents\Espiral\resources\tts\es_MX-claude-high.onnx"
 
 voice = PiperVoice.load(VOICE_PATH)
 SAMPLE_RATE = voice.config.sample_rate
