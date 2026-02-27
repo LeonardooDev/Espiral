@@ -2,12 +2,6 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
-# Holaaa, esto es una prueba
-
-# Esto tambien es una prueba
-
-# Prueba 3 
-
 load_dotenv() # Esto carga el archivo .env
 TOKEN_HF = os.getenv("TOKEN_HF") # Lee la variable sin mostrarla en el código
 
