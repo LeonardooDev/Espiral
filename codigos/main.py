@@ -1,42 +1,80 @@
+import time
 import codigo_ia
 import codigo_voz
+from voz_a_texto import ReconocedorVoz
+
+RUTA_MODELO = "resources/vosk-model-small-es-0.42"
+
 
 def ejecutar_sistema():
-    print("--- 🌀 SISTEMA ESPIRAL INICIADO ---")
-    # Mensaje inicial de bienvenida
-    codigo_voz.hablar("Sistema en línea")
+    print("\n--- 🌀 SISTEMA ESPIRAL INICIADO ---\n")
 
-    while True:
-        try:
-            # 1. Capturamos la entrada del usuario
-            user_input = input("\n👤 Tú: ")
-            
+    try:
+        # 🎤 Inicializar reconocimiento de voz
+        voz_entrada = ReconocedorVoz(RUTA_MODELO)
+
+    except Exception as e:
+        print("❌ Error iniciando reconocimiento:", e)
+        return
+
+    # 🔊 Mensaje inicial
+    codigo_voz.hablar("Sistema en línea")
+    time.sleep(0.5)
+
+    try:
+        while True:
+
+            # 🎤 Escuchar usuario
+            user_input = voz_entrada.escuchar()
+
+            if not user_input:
+                continue
+
+            print(f"\n👤 Tú: {user_input}")
+
             if user_input.lower() in ["salir", "exit", "s"]:
                 codigo_voz.hablar("Cerrando sistema")
                 break
 
-            # 2. Llamamos a la lógica de la IA (del archivo ia.py)
-            # Nota: Usamos la función de chat simplificada
-            respuesta_ia = codigo_ia.client_ia.chat_completion(
-                messages=[{"role": "user", "content": user_input}],
-                max_tokens=300
-            ).choices[0].message.content
-            
+            # 🤖 Llamar IA
+            print("⏳ Procesando con IA...")
+            respuesta_ia = codigo_ia.obtener_respuesta(user_input)
+
+            if not respuesta_ia:
+                print("⚠️ Respuesta vacía de IA")
+                continue
+
             print(f"🌀 Espiral: {respuesta_ia}")
 
-            # 3. Pasamos el texto de la IA al motor de voz (del archivo codigo_voz.py)
+            # 🔊 Convertir respuesta a voz
+            print("🔊 Enviando a síntesis...")
+
+            # 🛑 Pausar micrófono
+            voz_entrada.pausar()
+
+            # 🔊 Hablar
             codigo_voz.hablar(respuesta_ia)
 
-        except KeyboardInterrupt:
-            break
-        except Exception as e:
-            print(f"❌ Error en el flujo principal: {e}")
+            # Esperar a que termine de hablar
+            time.sleep(len(respuesta_ia) * 0.06)
+
+            # 🎤 Reanudar micrófono
+            voz_entrada.reanudar()
+
+    except KeyboardInterrupt:
+        print("\n🛑 Interrupción manual.")
+
+    except Exception as e:
+        print("❌ Error general del sistema:", e)
+
+    finally:
+        try:
+            voz_entrada.cerrar()
+        except Exception:
+            pass
+
+        print("\n✅ Sistema cerrado correctamente.")
+
 
 if __name__ == "__main__":
-    try:
-        ejecutar_sistema()
-    finally:
-        # Cerramos el stream de audio al salir
-        codigo_voz.stream.stop()
-        codigo_voz.stream.close()
-        print("\nSaliendo...")
+    ejecutar_sistema()
